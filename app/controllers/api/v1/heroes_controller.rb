@@ -38,9 +38,8 @@ module Api
       end
 
       private
-
       def hero_params
-        params.permit(:title, :body)
+        params.permit(:name, :race, :power, :defense)
       end
     end
   end
