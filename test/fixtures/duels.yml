@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id_hero_1: 1
+  id_hero_2: 1
+
+two:
+  id_hero_1: 1
+  id_hero_2: 1
