@@ -4,12 +4,10 @@ Rails.application.routes.draw do
   namespace 'api' do
     namespace 'v1' do
       resources :heroes
-      post "duel/fight"
+      resources :races
+      get 'races/:id/get_heroes', to: 'races#get_heroes'
+      get 'heroes/:id/get_race', to: 'heroes#get_race'
+      post 'duel/fight'
     end
   end
-  
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
 end
