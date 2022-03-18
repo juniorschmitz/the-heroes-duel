@@ -19,7 +19,7 @@ module Api
       def create
         race = Race.new(race_params)
         if race.save
-          render json: { status: 'SUCCESS', message: 'The new race was saved! :-)', data: race }, status: :ok
+          render json: { status: 'SUCCESS', message: 'The new race was saved! :-)', data: race }, status: :created
         else
           render json: { status: 'ERROR', message: 'We could not save the new race! :-(', data: race.errors },
                  status: :unprocessable_entity
@@ -28,22 +28,29 @@ module Api
 
       def destroy
         race = Race.find(params[:id])
-        if params[:id] != 0 || params[:id] != 1
-          race.destroy
-          render json: { status: 'SUCCESS', message: 'Your race has been deleted!', data: race }, status: :ok
+        if params[:id].to_i != 1 && params[:id].to_i != 2
+          if race.heroes.size > 0
+            render json: { status: 'ERROR', message: 'If you would like to delete this race, first you should delete these heroes:', heroes: race.heroes }, status: :unprocessable_entity
+          else
+            race.destroy
+            render json: { status: 'SUCCESS', message: 'Your race has been deleted!', data: race }, status: :ok
+          end
         else
-          render json: { status: 'SUCCESS', message: 'You cannot delete the primary races!', data: race }, status: :unprocessable_entity
+          render json: { status: 'ERROR', message: 'You cannot delete the primary races(human and orcs)!', data: race }, status: :unprocessable_entity
         end
-        
       end
 
       def update
         race = Race.find(params[:id])
-        if race.update_attributes(race_params)
-          render json: { status: 'SUCCESS', message: 'The race has been updated! :-)', data: race }, status: :ok
+        if params[:id].to_i != 1 && params[:id].to_i != 2
+          if race.update(race_params)
+            render json: { status: 'SUCCESS', message: 'The race has been updated! :-)', data: race }, status: :ok
+          else
+            render json: { status: 'ERROR', message: 'We could not update the race! :-(', data: race.errors },
+                  status: :unprocessable_entity
+          end
         else
-          render json: { status: 'ERROR', message: 'We could not update the race! :-(', data: race.errors },
-                 status: :unprocessable_entity
+          render json: { status: 'ERROR', message: 'You cannot update the primary races(human and orcs)!', data: race }, status: :unprocessable_entity
         end
       end
 

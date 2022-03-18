@@ -1,7 +1,7 @@
 ---
 openapi: 3.0.1
 info:
-  title: API V1
+  title: Middle Earth Duel API V1
   version: v1
 paths:
   "/api/v1/duel/fight":
@@ -10,8 +10,184 @@ paths:
       responses:
         '200':
           description: successful
+      tags:
+      - Duels
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_hero_1:
+                  type: integer
+                id_hero_2:
+                  type: integer
+              required:
+              - id_hero_1
+              - id_hero_2
+  "/api/v1/heroes":
+    get:
+      summary: list heroes
+      tags:
+      - Heroes
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create hero
+      tags:
+      - Heroes
+      responses:
+        '200':
+          description: successful
+  "/api/v1/heroes/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show hero
+      tags:
+      - Heroes
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update hero
+      tags:
+      - Heroes
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete hero
+      tags:
+      - Heroes
+      responses:
+        '200':
+          description: successful
+  "/api/v1/heroes/{id}/get_race":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: get_race hero
+      tags:
+      - Heroes
+      responses:
+        '200':
+          description: successful
+  "/api/v1/races":
+    get:
+      summary: list races
+      tags:
+      - Races
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create race
+      tags:
+      - Races
+      parameters: []
+      responses:
+        '201':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                buff_type:
+                  type: string
+                buff_quantity:
+                  type: string
+              required:
+              - name
+              - buff_type
+              - buff_quantity
+  "/api/v1/races/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show one race
+      tags:
+      - Races
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: race not found
+    put:
+      summary: update race
+      tags:
+      - Races
+      parameters: []
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: race not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                buff_type:
+                  type: string
+                buff_quantity:
+                  type: string
+              required:
+              - name
+              - buff_type
+              - buff_quantity
+    delete:
+      summary: delete race
+      tags:
+      - Races
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: race not found
+  "/api/v1/races/{id}/get_heroes":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: get_heroes race
+      tags:
+      - Races
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: race not found
 servers:
 - url: https://{defaultHost}
   variables:
     defaultHost:
-      default: www.example.com
+      default: middlearthduel.herokuapp.com

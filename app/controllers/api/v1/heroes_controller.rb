@@ -23,7 +23,7 @@ module Api
       def create
         hero = Hero.new(hero_params)
         if hero.save
-          render json: { status: 'SUCCESS', message: 'Your new hero was saved! :-)', data: hero }, status: :ok
+          render json: { status: 'SUCCESS', message: 'Your new hero was saved! :-)', data: hero }, status: :created
         else
           render json: { status: 'ERROR', message: 'We could not save your new hero! :-(', data: hero.errors },
                  status: :unprocessable_entity
