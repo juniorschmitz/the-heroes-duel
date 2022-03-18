@@ -10,6 +10,33 @@ paths:
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  about_fight:
+                    type: string
+                  winner:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      power:
+                        type: string
+                      defense:
+                        type: integer
+                  loser:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      power:
+                        type: string
+                      defense:
+                        type: integer
       tags:
       - Duels
       parameters: []
@@ -31,16 +58,90 @@ paths:
       summary: list heroes
       tags:
       - Heroes
+      description: Lists all heroes that are already registered.
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        power:
+                          type: string
+                        defense:
+                          type: integer
     post:
       summary: create hero
       tags:
       - Heroes
+      description: 'Creates a new hero. The hero contains name (ex: aragorn, legolas,
+        salron, etc), a power (that mus be between 1 and 1000), and the defense (that
+        must be between 0 and 1000), also, every hero should belong to a race, so
+        you must provide the race_id.'
+      parameters: []
       responses:
-        '200':
+        '201':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                      power:
+                        type: string
+                      defense:
+                        type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                power:
+                  type: integer
+                defense:
+                  type: integer
+                race_id:
+                  type: integer
+              required:
+              - name
+              - power
+              - defense
+              - race_id
   "/api/v1/heroes/{id}":
     parameters:
     - name: id
@@ -50,26 +151,134 @@ paths:
       schema:
         type: string
     get:
-      summary: show hero
+      summary: show one hero
       tags:
       - Heroes
+      description: Gets a specific hero by id.
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                      power:
+                        type: string
+                      defense:
+                        type: integer
+        '404':
+          description: hero not found
     put:
       summary: update hero
       tags:
       - Heroes
+      description: Updates a specific race.
+      parameters: []
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                      power:
+                        type: string
+                      defense:
+                        type: integer
+        '404':
+          description: hero not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                power:
+                  type: integer
+                defense:
+                  type: integer
+                race_id:
+                  type: integer
+              required:
+              - name
+              - power
+              - defense
+              - race_id
     delete:
       summary: delete hero
       tags:
       - Heroes
+      description: Deletes a specific hero
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                      power:
+                        type: string
+                      defense:
+                        type: integer
+        '404':
+          description: race not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
   "/api/v1/heroes/{id}/get_race":
     parameters:
     - name: id
@@ -82,25 +291,112 @@ paths:
       summary: get_race hero
       tags:
       - Heroes
+      description: Gets the race of the specified hero.
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                      buff_type:
+                        type: string
+                      buff_quantity:
+                        type: integer
+        '404':
+          description: race not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
   "/api/v1/races":
     get:
       summary: list races
       tags:
       - Races
+      description: Lists all races that are already registered.
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        buff_type:
+                          type: string
+                        buff_quantity:
+                          type: integer
     post:
       summary: create race
       tags:
       - Races
+      description: 'Creates a new race. The race contains name (ex: humans, orcs,
+        elves, etc), a buff_type that can be either power or defense, and the buff_quantity,
+        which will increase for each hero that belongs to the created race.'
       parameters: []
       responses:
         '201':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                      buff_type:
+                        type: string
+                      buff_quantity:
+                        type: integer
       requestBody:
         content:
           application/json:
@@ -129,21 +425,78 @@ paths:
       summary: show one race
       tags:
       - Races
+      description: Gets a specific race by id.
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                      buff_type:
+                        type: string
+                      buff_quantity:
+                        type: integer
         '404':
           description: race not found
     put:
       summary: update race
       tags:
       - Races
+      description: Updates a specific race.
       parameters: []
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                      buff_type:
+                        type: string
+                      buff_quantity:
+                        type: integer
         '404':
           description: race not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
       requestBody:
         content:
           application/json:
@@ -164,11 +517,37 @@ paths:
       summary: delete race
       tags:
       - Races
+      description: Deletes a specific race
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      buff_type:
+                        type: string
+                      buff_quantity:
+                        type: integer
         '404':
           description: race not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
   "/api/v1/races/{id}/get_heroes":
     parameters:
     - name: id
@@ -181,11 +560,44 @@ paths:
       summary: get_heroes race
       tags:
       - Races
+      description: Gets all heroes that already belong to that specific race.
       responses:
         '200':
           description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        power:
+                          type: string
+                        defense:
+                          type: integer
         '404':
           description: race not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
 servers:
 - url: https://{defaultHost}
   variables:
